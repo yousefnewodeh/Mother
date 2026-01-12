@@ -1,0 +1,352 @@
+:root {
+    --primary-pink: #ffb7c5;
+    --deep-pink: #ff69b4;
+    --gold: #ffd700;
+    --white: #fffdf9;
+    /* Warm parchment white */
+    --girlish-bg: radial-gradient(circle, #ffe6f2 0%, #ffcce6 100%);
+    --cover-color: #ff9ebb;
+    --page-bg: #fffdf9;
+    --text-color: #554;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: var(--girlish-bg);
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+    perspective: 1500px;
+    /* Essential for 3D effect */
+}
+
+/* Background floating elements (Hearts) styling is handled by JS injection */
+
+.scene {
+    position: relative;
+    width: 350px;
+    height: 500px;
+    display: flex;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-left: 50px;
+    /* Moves the whole scene right */
+}
+
+/* THE BOOK CONTAINER */
+.book {
+    position: relative;
+    width: 350px;
+    height: 500px;
+    transition: transform 0.5s;
+    transform-style: preserve-3d;
+}
+
+/* PAGES */
+.page {
+    position: absolute;
+    width: 350px;
+    height: 500px;
+    top: 0;
+    left: 0;
+    transform-origin: left;
+    /* Flips from the spine */
+    transform-style: preserve-3d;
+    transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* PAGE FACES (Front and Back) */
+.front,
+.back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--page-bg);
+    top: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    backface-visibility: hidden;
+    /* Hide the back when facing front */
+    border-radius: 5px 15px 15px 5px;
+    box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1), 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Front Face */
+.front {
+    z-index: 2;
+}
+
+/* Back Face - Rotated so it appears correct when page is flipped */
+.back {
+    transform: rotateY(180deg);
+    z-index: 1;
+    background: var(--page-bg);
+    border-radius: 15px 5px 5px 15px;
+    /* Mirrored radius */
+}
+
+/* FLIPPED STATE */
+.page.flipped {
+    transform: rotateY(-180deg);
+}
+
+/* Z-INDEX MANAGEMENT FOR PAGES */
+/* Only needed if pure DOM order isn't sufficient, but let's be explicit */
+#p1 {
+    z-index: 3;
+}
+
+#p2 {
+    z-index: 2;
+}
+
+#p3 {
+    z-index: 1;
+}
+
+
+/* COVER DESIGN (Page 1 Front) */
+.cover {
+    background-color: var(--cover-color);
+    background-image:
+        radial-gradient(circle, rgba(255, 255, 255, 0.2) 2px, transparent 2.5px);
+    background-size: 20px 20px;
+    border: 3px solid var(--gold);
+    color: white;
+    text-align: center;
+}
+
+.cover h1 {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3.5rem;
+    margin-bottom: 20px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* INNER PAGE CONTENT */
+.page-content {
+    text-align: center;
+    border: 2px dashed var(--primary-pink);
+    padding: 20px;
+    height: 90%;
+    width: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+}
+
+.page-content h2 {
+    font-family: 'Pacifico', cursive;
+    color: var(--deep-pink);
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.page-content p {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    line-height: 1.6;
+    font-style: italic;
+}
+
+/* FINAL PAGE SPECIAL STYLING */
+.final-page {
+    border: 3px solid var(--gold);
+}
+
+.final-page h1 {
+    font-family: 'Great Vibes', cursive;
+    color: var(--deep-pink);
+    font-size: 3rem;
+}
+
+.cake-icon {
+    font-size: 5rem;
+    margin-top: 20px;
+    animation: bounce 2s infinite;
+}
+
+/* INSTRUCTION TEXT */
+.instruction {
+    position: absolute;
+    bottom: -60px;
+    color: var(--deep-pink);
+    font-family: 'Pacifico', cursive;
+    font-size: 1.2rem;
+    animation: pulse 2s infinite;
+    pointer-events: none;
+    background: rgba(255, 255, 255, 0.7);
+    padding: 5px 15px;
+    border-radius: 20px;
+}
+
+/* ANIMATIONS */
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 0.7;
+    }
+
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Internal Floating Emojis */
+.internal-emoji {
+    position: absolute;
+    font-size: 24px;
+    pointer-events: none;
+    z-index: 20;
+    animation: internalFloat 2s ease-out forwards;
+}
+
+@keyframes internalFloat {
+    0% {
+        transform: translateY(0) scale(0.5);
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-100px) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* Floating Hearts Background (Shared) */
+.floating-heart {
+    position: absolute;
+    color: #ffb7c5;
+    font-size: 20px;
+    animation: floatUp 10s linear infinite;
+    opacity: 0.8;
+    z-index: -1;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(100vh) scale(0.5);
+        opacity: 0;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+
+    100% {
+        transform: translateY(-10vh) scale(1.5);
+        opacity: 0;
+    }
+}
+
+/* Responsive Mobile View (Slides) */
+@media (max-width: 600px) {
+    .scene {
+        transform: none;
+        width: 100%;
+        height: 100vh;
+        margin-left: 0;
+        overflow: hidden;
+    }
+
+    .book {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        overflow-x: scroll;
+        overflow-y: hidden;
+        scroll-snap-type: x mandatory;
+        transform: none !important;
+        /* Disable mouse tilt */
+        background: var(--girlish-bg);
+    }
+
+    .page {
+        display: contents;
+        /* Remove page wrapper from box tree */
+    }
+
+    .front,
+    .back {
+        position: relative;
+        min-width: 100vw;
+        /* Full viewport width */
+        height: 100vh;
+        transform: none !important;
+        /* Reset 3D transforms */
+        border-radius: 0;
+        opacity: 1 !important;
+        scroll-snap-align: center;
+        margin: 0;
+        padding: 20px;
+        box-shadow: none;
+        top: auto;
+        left: auto;
+        backface-visibility: visible;
+    }
+
+    /* Adjust content for mobile */
+    .page-content {
+        width: 100%;
+        height: 100%;
+        max-width: 350px;
+        /* Keep reading width reasonable */
+    }
+
+    .instruction {
+        bottom: 20px;
+        font-size: 1rem;
+        z-index: 100;
+        pointer-events: none;
+        content: "Swipe to read!";
+        /* CSS content replacement trick? No, better to just rely on user intuition or js update. */
+        /* Let's just position it fixed at bottom */
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* Hide the mouse-tilt instruction if present (it's hardcoded text, so can't hide easily via CSS unless wrapped. 
+       The current text is "Click the right side/Swipe". 
+       Let's stick to the visuals. */
+
+    /* Ensure back faces are background colored correctly if transparent */
+    .back {
+        background: var(--page-bg);
+    }
+}
