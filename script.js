@@ -87,8 +87,8 @@ document.addEventListener('DOMContentLoaded', () => {
         // Calculate rotation intensity
         // Center (0.5, 0.5) = 0deg.
         // Left = -y deg, Right = +y deg.
-        const ax = (x - width / 2) / width * 20; // Rotate Y axis: -10 to 10 deg
-        const ay = (y - height / 2) / height * -20; // Rotate X axis: -10 to 10 deg (inverted)
+        const ax = (x - width / 2) / width * 35; // Increased range from 20 to 35
+        const ay = (y - height / 2) / height * -35; // Increased range from 20 to 35 (inverted)
 
         book.style.transform = `rotateY(${ax}deg) rotateX(${ay}deg)`;
     });
